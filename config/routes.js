@@ -5,7 +5,7 @@
  */
 
 const home = require('./routes/home');
-
+const request = require('./routes/requestUser');
 /**
  * Expose
  */
@@ -13,13 +13,14 @@ const home = require('./routes/home');
 module.exports = function(app) {
   // Set global routes
   app.use('/', home);
-
+  app.use('/request', request);
   /**
    * Error handling
    */
 
   app.use(function(err, req, res, next) {
     // treat as 404
+    res.locals.csrfToken = req.csrfToken();
     if (
       err.message &&
       (~err.message.indexOf('not found') ||
